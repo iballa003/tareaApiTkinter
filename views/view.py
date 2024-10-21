@@ -15,17 +15,24 @@ def ImgFromUrl(url):
     image = ImageTk.PhotoImage(im)
     return image
 
+def changeContent(index):
+    title_label.config(text=productLists[index].title)
+    image2 = ImgFromUrl(productLists[index].thumbnail)
+    image_label.config(image=image2)
+    image_label.image=image2
+    descripcion_content_label.config(text=productLists[index].description)
+    price_content_label.config(text=productLists[index].price)
+
 def next():
-    print("test")
-    global productResponse, productIndex, title_label
-
-    title_label.config(text=productResponse.productList.products[productIndex].title)
-
+    global productIndex, productLists
     productIndex += 1
-    print(productIndex)
+    changeContent(productIndex)
 
 def previous():
-    print("test")
+    global productIndex, productLists
+    if(productIndex > 0):
+        productIndex -= 1
+        changeContent(productIndex)
 
 
     #-----------------------------------------------------------------------------
@@ -38,22 +45,25 @@ root.geometry("512x612")
 root.resizable(False,False)
 productIndex = 0
 
+productLists = productResponse.productList.products
 
 #-------------------------------------------------------------------#Title
 frame_title = Frame(root).pack()
-title_label = tk.Label(frame_title, text=productResponse.productList.products[productIndex].title, font='Helvetica 18 bold')
+title_label = tk.Label(frame_title, text=productLists[productIndex].title, font='Helvetica 18 bold')
 title_label.pack()
 #-------------------------------------------------------------------#Image
-image = ImgFromUrl(productResponse.productList.products[productIndex].thumbnail)
+image = ImgFromUrl(productLists[productIndex].thumbnail)
 image_label = tk.Label(root, image=image)
 image_label.pack()
 #-------------------------------------------------------------------#Description
 frame_description = Frame(root).pack()
 descripcion_title_label = tk.Label(frame_description, text="Descripción", font='Helvetica 12 bold').pack(anchor="w")
-descripcion_content_label = tk.Label(frame_description, text=productResponse.productList.products[productIndex].description,wraplength=500, justify="left").pack()
+descripcion_content_label = tk.Label(frame_description, text=productLists[productIndex].description,wraplength=500, justify="left")
+descripcion_content_label.pack()
 #-------------------------------------------------------------------#Price
 price_label = tk.Label(root, text="Precio: ", font='Helvetica 11 bold',pady=5).pack(anchor="w")
-price_content_label = tk.Label(root, text=productResponse.productList.products[productIndex].price).pack(anchor="w")
+price_content_label = tk.Label(root, text=productLists[productIndex].price)
+price_content_label.pack(anchor="w")
 #-------------------------------------------------------------------#Buttons
 button_frame = Frame(root).pack()
 previous_button = tk.Button(button_frame,text="Anterior",command=previous).pack(side=LEFT)
