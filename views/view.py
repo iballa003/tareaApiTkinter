@@ -22,6 +22,7 @@ def changeContent(index):
     image_label.image=image2
     descripcion_content_label.config(text=productLists[index].description)
     price_content_label.config(text=productLists[index].price)
+    rating_content_label.config(text=productLists[productIndex].rating)
 
 def next():
     global productIndex, productLists
@@ -64,6 +65,10 @@ descripcion_content_label.pack()
 price_label = tk.Label(root, text="Precio: ", font='Helvetica 11 bold',pady=5).pack(anchor="w")
 price_content_label = tk.Label(root, text=productLists[productIndex].price)
 price_content_label.pack(anchor="w")
+#-------------------------------------------------------------------#Price
+rating_label = tk.Label(root, text="Rating: ", font='Helvetica 11 bold',pady=5).pack(anchor="w")
+rating_content_label = tk.Label(root, text=productLists[productIndex].rating)
+rating_content_label.pack(anchor="w")
 #-------------------------------------------------------------------#Buttons
 button_frame = Frame(root).pack()
 previous_button = tk.Button(button_frame,text="Anterior",command=previous).pack(side=LEFT)
