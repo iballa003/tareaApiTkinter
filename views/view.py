@@ -21,12 +21,18 @@ def ImgFromUrl(url):
 
 def search():
     global productLists
-    titles = filter(checkResults, productLists)
-    print(list(titles))
+    coincidences = filter(check_coincidences, productLists)
+    coincidences_list = list(coincidences)
+    titles = []
+    if len(coincidences_list) > 0:
+        for x in coincidences_list:
+            titles.append(x.title)
+    print(titles)
+    openNewWindow(titles)
 
-def checkResults(e):
+def check_coincidences(e):
     search_bar_content = search_bar.get()
-    if search_bar_content == e.title:
+    if (search_bar_content.lower() in e.title.lower() or search_bar_content.lower() in e.category.lower()) and search_bar_content != "":
         return True
 
 def changeContent(index):
@@ -39,6 +45,19 @@ def changeContent(index):
     price_content_label.config(text=productLists[index].price)
     rating_content_label.config(text=productLists[productIndex].rating)
 
+
+def openNewWindow(productos):
+    newWindow = Toplevel(root)
+    newWindow.title("Coincidencias")
+    newWindow.geometry("280x500")
+    if len(productos) > 0:
+        Label(newWindow,text="Productos encontrados:",font='Helvetica 18 bold').pack()
+        for producto in productos:
+            Label(newWindow,
+              text=producto).pack()
+    else:
+        Label(newWindow,
+              text="No se han encontrado productos").pack()
 def next():
     global productIndex, productLists
     productIndex += 1
@@ -67,7 +86,6 @@ productIndex = 0
 style = ttk.Style()
 style.configure("FrameTitle", background="red")
 productLists = productsApiRequest.products
-print(productLists[0])
 ##--------##Tkinter Search bar##--------##
 search_label = ttk.Label(root, text="Buscar:", font='Helvetica 12 bold')
 search_label.grid(row=0,column=2,sticky=W)
